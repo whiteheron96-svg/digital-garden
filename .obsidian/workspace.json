@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "99126ce10181d824",
+        "id": "c04ce9a1cac1a3d2",
         "type": "tabs",
         "children": [
           {
-            "id": "e40d84a3f5b450f6",
+            "id": "1f09bc88b55f1b13",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "garden/데이터분석/DB/2026.6.2. Supabase DB를 백업했습니다..md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "2026.6.2. Supabase DB를 백업했습니다."
+              "title": "새 탭"
             }
           }
         ]
@@ -176,12 +172,13 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "e40d84a3f5b450f6",
+  "active": "1f09bc88b55f1b13",
   "lastOpenFiles": [
-    "garden/바이브코딩/2026.6.1. Digital Garden을 오픈했습니다..md",
     "Obsidian Quartz에 push 하는 방법.md",
+    "private/Untitled.canvas",
+    "content/데이터분석/DB/2026.6.2. Supabase DB를 백업했습니다..md",
+    "garden/바이브코딩/2026.6.1. Digital Garden을 오픈했습니다..md",
     "private/마인드맵/260603_비전마인드맵.md",
-    "garden/데이터분석/DB/2026.6.2. Supabase DB를 백업했습니다..md",
     "content/바이브코딩/2026.6.1. Digital Garden을 오픈했습니다..md",
     "content/바이브코딩",
     "node_modules/pixi.js/lib/scene/text-split/types.d.ts",
@@ -213,7 +210,6 @@
     "node_modules/speech-rule-engine/lib/README.md",
     "node_modules/katex/src/metrics/README.md",
     "node_modules/katex/README.md",
-    "node_modules/@esbuild/darwin-arm64/README.md",
     "node_modules/cli-spinner/img/spinner.gif",
     "node_modules/js-binary-schema-parser/example/dog.gif",
     "node_modules/js-binary-schema-parser/example/horses.gif",
