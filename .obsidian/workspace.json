@@ -11,10 +11,14 @@
             "id": "1f09bc88b55f1b13",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "content/데이터분석/DB/2026.6.3. Supabase DB를 백업했습니다..md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "새 탭"
+              "title": "2026.6.3. Supabase DB를 백업했습니다."
             }
           }
         ]
@@ -176,7 +180,7 @@
   "lastOpenFiles": [
     "Obsidian Quartz에 push 하는 방법.md",
     "private/Untitled.canvas",
-    "content/데이터분석/DB/2026.6.2. Supabase DB를 백업했습니다..md",
+    "content/데이터분석/DB/2026.6.3. Supabase DB를 백업했습니다..md",
     "garden/바이브코딩/2026.6.1. Digital Garden을 오픈했습니다..md",
     "private/마인드맵/260603_비전마인드맵.md",
     "content/바이브코딩/2026.6.1. Digital Garden을 오픈했습니다..md",
