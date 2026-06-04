@@ -1,62 +1,57 @@
 import { QuartzComponent, QuartzComponentConstructor, QuartzComponentProps } from "./types"
 import { classNames } from "../util/lang"
+import style from "./styles/comments.scss"
 // @ts-ignore
 import script from "./scripts/comments.inline"
 
-type Options = {
-  provider: "giscus"
-  options: {
-    repo: `${string}/${string}`
-    repoId: string
-    category: string
-    categoryId: string
-    themeUrl?: string
-    lightTheme?: string
-    darkTheme?: string
-    mapping?: "url" | "title" | "og:title" | "specific" | "number" | "pathname"
-    strict?: boolean
-    reactionsEnabled?: boolean
-    inputPosition?: "top" | "bottom"
-    lang?: string
-  }
-}
+const supabaseUrl = process.env.PUBLIC_SUPABASE_URL ?? ""
+const supabaseAnonKey = process.env.PUBLIC_SUPABASE_ANON_KEY ?? ""
 
-function boolToStringBool(b: boolean): string {
-  return b ? "1" : "0"
-}
+const Comments: QuartzComponent = ({ displayClass, fileData }: QuartzComponentProps) => {
+  const slug = fileData.slug ?? ""
+  const isPost = slug !== "index" && !slug.startsWith("tags/") && !slug.endsWith("/index")
+  const disableComment: boolean =
+    typeof fileData.frontmatter?.comments !== "undefined" &&
+    (!fileData.frontmatter?.comments || fileData.frontmatter?.comments === "false")
 
-export default ((opts: Options) => {
-  const Comments: QuartzComponent = ({ displayClass, fileData, cfg }: QuartzComponentProps) => {
-    // check if comments should be displayed according to frontmatter
-    const disableComment: boolean =
-      typeof fileData.frontmatter?.comments !== "undefined" &&
-      (!fileData.frontmatter?.comments || fileData.frontmatter?.comments === "false")
-    if (disableComment) {
-      return <></>
-    }
-
-    return (
-      <div
-        class={classNames(displayClass, "giscus")}
-        data-repo={opts.options.repo}
-        data-repo-id={opts.options.repoId}
-        data-category={opts.options.category}
-        data-category-id={opts.options.categoryId}
-        data-mapping={opts.options.mapping ?? "url"}
-        data-strict={boolToStringBool(opts.options.strict ?? true)}
-        data-reactions-enabled={boolToStringBool(opts.options.reactionsEnabled ?? true)}
-        data-input-position={opts.options.inputPosition ?? "bottom"}
-        data-light-theme={opts.options.lightTheme ?? "light"}
-        data-dark-theme={opts.options.darkTheme ?? "dark"}
-        data-theme-url={
-          opts.options.themeUrl ?? `https://${cfg.baseUrl ?? "example.com"}/static/giscus`
-        }
-        data-lang={opts.options.lang ?? "en"}
-      ></div>
-    )
+  if (!isPost || disableComment) {
+    return <></>
   }
 
-  Comments.afterDOMLoaded = script
+  return (
+    <section
+      class={classNames(displayClass, "comments")}
+      data-supabase-url={supabaseUrl}
+      data-supabase-anon-key={supabaseAnonKey}
+    >
+      <h2>Comments</h2>
+      <div class="comments-status" role="status" aria-live="polite">
+        Loading comments...
+      </div>
+      <ol class="comments-list"></ol>
+      <form class="comments-form">
+        <label>
+          <span>Nickname</span>
+          <input
+            class="comments-nickname"
+            type="text"
+            name="nickname"
+            autocomplete="name"
+            maxlength={80}
+            required
+          />
+        </label>
+        <label>
+          <span>Comment</span>
+          <textarea class="comments-content" name="content" rows={4} maxlength={2000} required />
+        </label>
+        <button type="submit">Post comment</button>
+      </form>
+    </section>
+  )
+}
 
-  return Comments
-}) satisfies QuartzComponentConstructor<Options>
+Comments.afterDOMLoaded = script
+Comments.css = style
+
+export default (() => Comments) satisfies QuartzComponentConstructor

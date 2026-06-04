@@ -1,0 +1,121 @@
+.comments {
+  margin-top: 2rem;
+
+  & h2 {
+    margin-top: 0;
+    font-size: 1.4rem;
+  }
+
+  & .comments-status {
+    color: var(--gray);
+    font-size: 0.95rem;
+    margin: 0.5rem 0 1rem;
+
+    &[data-state="error"] {
+      color: var(--secondary);
+    }
+  }
+
+  & .comments-list {
+    list-style: none;
+    margin: 0 0 1.5rem;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  & .comment {
+    border: 1px solid var(--lightgray);
+    border-radius: 5px;
+    padding: 0.8rem 1rem;
+    background: var(--light);
+  }
+
+  & .comment-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.35rem;
+  }
+
+  & .comment-header strong {
+    color: var(--dark);
+  }
+
+  & .comment-header time {
+    color: var(--gray);
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+
+  & .comment p {
+    margin: 0;
+    white-space: pre-wrap;
+  }
+
+  & .comments-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  & .comments-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    color: var(--dark);
+    font-weight: 600;
+  }
+
+  & input,
+  & textarea {
+    box-sizing: border-box;
+    width: 100%;
+    border: 1px solid var(--lightgray);
+    border-radius: 5px;
+    background: var(--light);
+    color: var(--darkgray);
+    font: inherit;
+    padding: 0.55rem 0.65rem;
+  }
+
+  & textarea {
+    resize: vertical;
+  }
+
+  & input:focus,
+  & textarea:focus {
+    outline: none;
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--secondary) 20%, transparent);
+  }
+
+  & button {
+    align-self: flex-start;
+    border: 1px solid var(--secondary);
+    border-radius: 5px;
+    background: var(--secondary);
+    color: var(--light);
+    cursor: pointer;
+    font: inherit;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+  }
+
+  & button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+@media all and (max-width: 800px) {
+  .comments {
+    & .comment-header {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+  }
+}

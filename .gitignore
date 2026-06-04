@@ -9,3 +9,9 @@ tsconfig.tsbuildinfo
 private/
 .replit
 replit.nix
+.env
+.env.local
+.env
+.env.local
+.DS_Store
+.obsidian/workspace.json

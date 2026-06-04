@@ -1,6 +1,7 @@
 import { promises } from "fs"
 import path from "path"
 import esbuild from "esbuild"
+import dotenv from "dotenv"
 import { styleText } from "util"
 import { sassPlugin } from "esbuild-sass-plugin"
 import fs from "fs"
@@ -32,6 +33,9 @@ import {
   cacheFile,
   cwd,
 } from "./constants.js"
+
+dotenv.config({ path: ".env", quiet: true })
+dotenv.config({ path: ".env.local", override: true, quiet: true })
 
 /**
  * Resolve content directory path

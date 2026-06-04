@@ -1,92 +1,179 @@
-const changeTheme = (e: CustomEventMap["themechange"]) => {
-  const theme = e.detail.theme
-  const iframe = document.querySelector("iframe.giscus-frame") as HTMLIFrameElement
-  if (!iframe) {
-    return
-  }
+import { createClient } from "@supabase/supabase-js"
 
-  if (!iframe.contentWindow) {
-    return
-  }
-
-  iframe.contentWindow.postMessage(
-    {
-      giscus: {
-        setConfig: {
-          theme: getThemeUrl(getThemeName(theme)),
-        },
-      },
-    },
-    "https://giscus.app",
-  )
+type SupabaseComment = {
+  id: string | number
+  page_slug: string
+  nickname: string
+  content: string
+  created_at: string
 }
 
-const getThemeName = (theme: string) => {
-  if (theme !== "dark" && theme !== "light") {
-    return theme
-  }
-  const giscusContainer = document.querySelector(".giscus") as GiscusElement
-  if (!giscusContainer) {
-    return theme
-  }
-  const darkGiscus = giscusContainer.dataset.darkTheme ?? "dark"
-  const lightGiscus = giscusContainer.dataset.lightTheme ?? "light"
-  return theme === "dark" ? darkGiscus : lightGiscus
-}
-
-const getThemeUrl = (theme: string) => {
-  const giscusContainer = document.querySelector(".giscus") as GiscusElement
-  if (!giscusContainer) {
-    return `https://giscus.app/themes/${theme}.css`
-  }
-  return `${giscusContainer.dataset.themeUrl ?? "https://giscus.app/themes"}/${theme}.css`
-}
-
-type GiscusElement = Omit<HTMLElement, "dataset"> & {
+type CommentsElement = Omit<HTMLElement, "dataset"> & {
   dataset: DOMStringMap & {
-    repo: `${string}/${string}`
-    repoId: string
-    category: string
-    categoryId: string
-    themeUrl: string
-    lightTheme: string
-    darkTheme: string
-    mapping: "url" | "title" | "og:title" | "specific" | "number" | "pathname"
-    strict: string
-    reactionsEnabled: string
-    inputPosition: "top" | "bottom"
-    lang: string
+    supabaseUrl?: string
+    supabaseAnonKey?: string
   }
 }
 
-document.addEventListener("nav", () => {
-  const giscusContainer = document.querySelector(".giscus") as GiscusElement
-  if (!giscusContainer) {
+const clearChildren = (element: Element) => {
+  while (element.firstChild) {
+    element.removeChild(element.firstChild)
+  }
+}
+
+const setStatus = (status: HTMLElement, message: string, isError = false) => {
+  status.textContent = message
+  status.dataset.state = isError ? "error" : "default"
+}
+
+const formatDate = (value: string) => {
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime())) {
+    return value
+  }
+
+  return new Intl.DateTimeFormat(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  }).format(date)
+}
+
+const createCommentItem = (comment: SupabaseComment) => {
+  const item = document.createElement("li")
+  item.className = "comment"
+
+  const header = document.createElement("div")
+  header.className = "comment-header"
+
+  const nickname = document.createElement("strong")
+  nickname.textContent = comment.nickname
+
+  const time = document.createElement("time")
+  time.dateTime = comment.created_at
+  time.textContent = formatDate(comment.created_at)
+
+  const content = document.createElement("p")
+  content.textContent = comment.content
+
+  header.append(nickname, time)
+  item.append(header, content)
+
+  return item
+}
+
+const initComments = () => {
+  const container = document.querySelector(".comments") as CommentsElement | null
+  if (!container) {
     return
   }
 
-  const giscusScript = document.createElement("script")
-  giscusScript.src = "https://giscus.app/client.js"
-  giscusScript.async = true
-  giscusScript.crossOrigin = "anonymous"
-  giscusScript.setAttribute("data-loading", "lazy")
-  giscusScript.setAttribute("data-emit-metadata", "0")
-  giscusScript.setAttribute("data-repo", giscusContainer.dataset.repo)
-  giscusScript.setAttribute("data-repo-id", giscusContainer.dataset.repoId)
-  giscusScript.setAttribute("data-category", giscusContainer.dataset.category)
-  giscusScript.setAttribute("data-category-id", giscusContainer.dataset.categoryId)
-  giscusScript.setAttribute("data-mapping", giscusContainer.dataset.mapping)
-  giscusScript.setAttribute("data-strict", giscusContainer.dataset.strict)
-  giscusScript.setAttribute("data-reactions-enabled", giscusContainer.dataset.reactionsEnabled)
-  giscusScript.setAttribute("data-input-position", giscusContainer.dataset.inputPosition)
-  giscusScript.setAttribute("data-lang", giscusContainer.dataset.lang)
-  const theme = document.documentElement.getAttribute("saved-theme")
-  if (theme) {
-    giscusScript.setAttribute("data-theme", getThemeUrl(getThemeName(theme)))
+  const supabaseUrl = container.dataset.supabaseUrl
+  const supabaseAnonKey = container.dataset.supabaseAnonKey
+  const status = container.querySelector(".comments-status") as HTMLElement | null
+  const list = container.querySelector(".comments-list") as HTMLOListElement | null
+  const form = container.querySelector("form.comments-form") as HTMLFormElement | null
+  const nicknameInput = container.querySelector(".comments-nickname") as HTMLInputElement | null
+  const contentInput = container.querySelector(".comments-content") as HTMLTextAreaElement | null
+
+  if (!status || !list || !form || !nicknameInput || !contentInput) {
+    return
   }
 
-  giscusContainer.appendChild(giscusScript)
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error("Missing Supabase comments configuration", {
+      hasSupabaseUrl: Boolean(supabaseUrl),
+      hasSupabaseAnonKey: Boolean(supabaseAnonKey),
+    })
+    setStatus(status, "Comments are not configured.", true)
+    form.hidden = true
+    return
+  }
 
-  document.addEventListener("themechange", changeTheme)
-  window.addCleanup(() => document.removeEventListener("themechange", changeTheme))
-})
+  const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+  const loadComments = async () => {
+    const pageSlug = window.location.pathname
+    setStatus(status, "Loading comments...")
+
+    const { data, error } = await supabase
+      .from("comments")
+      .select("*")
+      .eq("page_slug", pageSlug)
+      .order("created_at")
+
+    if (error) {
+      console.error(error)
+      setStatus(status, "Could not load comments.", true)
+      return
+    }
+
+    try {
+      const comments = (data ?? []) as SupabaseComment[]
+      clearChildren(list)
+
+      for (const comment of comments) {
+        list.appendChild(createCommentItem(comment))
+      }
+
+      setStatus(
+        status,
+        comments.length === 0
+          ? "No comments yet."
+          : `${comments.length} comment${comments.length === 1 ? "" : "s"}`,
+      )
+    } catch (error) {
+      console.error(error)
+      setStatus(status, "Could not load comments.", true)
+    }
+  }
+
+  const submitComment = async (event: SubmitEvent) => {
+    event.preventDefault()
+    event.stopPropagation()
+    console.log("comment submit triggered")
+
+    const nickname = nicknameInput.value.trim()
+    const content = contentInput.value.trim()
+    if (!nickname || !content) {
+      setStatus(status, "Nickname and comment are required.", true)
+      return
+    }
+
+    const submitButton = form.querySelector("button[type='submit']") as HTMLButtonElement | null
+    submitButton?.setAttribute("disabled", "true")
+    setStatus(status, "Posting comment...")
+
+    try {
+      const { error } = await supabase.schema("public").from("comments").insert({
+        page_slug: window.location.pathname,
+        nickname,
+        content,
+      })
+
+      if (error) {
+        console.error(error)
+        setStatus(status, "Could not post comment.", true)
+        return
+      }
+
+      contentInput.value = ""
+      await loadComments()
+    } catch (error) {
+      console.error(error)
+      setStatus(status, "Could not post comment.", true)
+    } finally {
+      submitButton?.removeAttribute("disabled")
+    }
+  }
+
+  if (form.dataset.commentsBound !== "true") {
+    form.dataset.commentsBound = "true"
+    form.addEventListener("submit", submitComment)
+    window.addCleanup?.(() => form.removeEventListener("submit", submitComment))
+  }
+
+  loadComments()
+}
+
+initComments()
+document.addEventListener("nav", initComments)
