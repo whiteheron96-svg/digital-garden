@@ -1,3 +1,146 @@
 @use "./base.scss";
 
-// put your custom CSS here!
+/* =========================================================
+   Ellie's Digital Garden — 흑백 모노톤 미니멀 테마
+   ========================================================= */
+
+/* ----- Pretendard (가변 폰트, CDN) ----- */
+@font-face {
+  font-family: "Pretendard Variable";
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/woff2/PretendardVariable.woff2")
+    format("woff2-variations");
+}
+
+/* 제목·본문 모두 Pretendard로 지정 (Noto Sans KR은 예비 폰트) */
+:root {
+  --bodyFont:
+    "Pretendard Variable", "Noto Sans KR", -apple-system, BlinkMacSystemFont,
+    system-ui, sans-serif !important;
+  --headerFont:
+    "Pretendard Variable", "Noto Sans KR", -apple-system, BlinkMacSystemFont,
+    system-ui, sans-serif !important;
+}
+
+/* ----- 제목: 또렷하고 자간을 살짝 좁혀 미니멀하게 ----- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--dark);
+}
+
+.article-title {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+/* 상단 사이트 제목 */
+.page-title a {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* ----- 본문: 줄간격 넉넉하게, 읽기 편하게 ----- */
+article p,
+article li {
+  line-height: 2.0;
+  letter-spacing: -0.003em;
+}
+
+/* 목록 항목 사이도 살짝 띄워 호흡 있게 */
+article li {
+  margin-top: 0.4rem;
+}
+
+/* ----- 본문 링크: 흑백 + 은은하게 차오르는 밑줄 ----- */
+article a:not(.internal):not(.tag-link) {
+  text-decoration: none;
+  color: var(--dark);
+  background-image: linear-gradient(currentColor, currentColor);
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  background-size: 0% 1.5px;
+  transition: background-size 0.25s ease;
+
+  &:hover {
+    background-size: 100% 1.5px;
+  }
+}
+
+/* 내부 위키링크: 배경 없이 차분한 밑줄 */
+article a.internal {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  color: var(--dark);
+  font-weight: 500;
+  border-bottom: 1px solid var(--lightgray);
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-bottom-color: var(--dark);
+  }
+}
+
+/* ----- 모서리를 날카롭게: 미니멀한 인상 ----- */
+img,
+pre,
+.callout,
+.popover-inner {
+  border-radius: 2px !important;
+}
+
+/* ----- 인용구: 왼쪽 굵은 검정 바 ----- */
+blockquote {
+  border-left: 3px solid var(--dark);
+  color: var(--darkgray);
+  font-style: normal;
+}
+
+/* ----- 코드블럭: 얇은 테두리 ----- */
+pre {
+  border: 1px solid var(--lightgray);
+}
+
+/* ----- 구분선 얇고 흐리게 ----- */
+hr {
+  border-color: var(--lightgray);
+  margin: 2.5rem auto;
+}
+
+/* ----- 좌측 Explorer / 우측 TOC: 톤 다운 ----- */
+.explorer,
+.toc {
+  font-size: 0.85rem;
+}
+
+.toc > button > h3,
+.explorer > button > h2 {
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: var(--gray);
+}
+
+/* ----- 태그: 외곽선 칩 스타일 ----- */
+a.tag-link {
+  background-color: transparent;
+  border: 1px solid var(--lightgray);
+  color: var(--darkgray);
+  border-radius: 4px;
+  font-weight: 500;
+  transition: border-color 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    border-color: var(--dark);
+    color: var(--dark);
+  }
+}

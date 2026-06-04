@@ -24,32 +24,32 @@ const config: QuartzConfig = {
       fontOrigin: "googleFonts",
       cdnCaching: true,
       typography: {
-        header: "Schibsted Grotesk",
-        body: "Source Sans Pro",
+        header: "Gothic A1",
+        body: "Noto Sans KR",
         code: "IBM Plex Mono",
       },
       colors: {
         lightMode: {
-          light: "#faf8f8",
-          lightgray: "#e5e5e5",
-          gray: "#b8b8b8",
-          darkgray: "#4e4e4e",
-          dark: "#2b2b2b",
-          secondary: "#284b63",
-          tertiary: "#84a59d",
-          highlight: "rgba(143, 159, 169, 0.15)",
-          textHighlight: "#fff23688",
+          light: "#ffffff",         // 배경: 순백
+          lightgray: "#ececec",     // 경계선
+          gray: "#9e9e9e",          // 흐린 텍스트 / 그래프
+          darkgray: "#363636",      // 본문 텍스트
+          dark: "#0f0f0f",          // 제목 / 거의 검정
+          secondary: "#0f0f0f",     // 링크 / 강조: 검정
+          tertiary: "#5c5c5c",      // 호버
+          highlight: "rgba(0, 0, 0, 0.04)",
+          textHighlight: "#00000010",
         },
         darkMode: {
-          light: "#161618",
-          lightgray: "#393639",
-          gray: "#646464",
-          darkgray: "#d4d4d4",
-          dark: "#ebebec",
-          secondary: "#7b97aa",
-          tertiary: "#84a59d",
-          highlight: "rgba(143, 159, 169, 0.15)",
-          textHighlight: "#b3aa0288",
+          light: "#0c0c0d",         // 배경: 거의 검정
+          lightgray: "#2b2b2e",     // 경계선
+          gray: "#6f6f74",          // 흐린 텍스트 / 그래프
+          darkgray: "#c9c9cd",      // 본문 텍스트
+          dark: "#f4f4f5",          // 제목 / 거의 흰색
+          secondary: "#f4f4f5",     // 링크 / 강조: 흰색
+          tertiary: "#a8a8ad",      // 호버
+          highlight: "rgba(255, 255, 255, 0.05)",
+          textHighlight: "#ffffff14",
         },
       },
     },
