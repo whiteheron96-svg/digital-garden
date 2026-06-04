@@ -17,7 +17,7 @@ const config: QuartzConfig = {
       tagId: "G-RBJMQOSQ1"
     },
     locale: "en-US",
-    baseUrl: "quartz.jzhao.xyz",
+    baseUrl: "https://whiteheron96-svg.github.io/digital-garden",
     ignorePatterns: ["private", "templates", ".obsidian"],
     defaultDateType: "modified",
     theme: {
