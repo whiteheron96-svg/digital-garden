@@ -130,6 +130,41 @@ hr {
   color: var(--gray);
 }
 
+/* =========================================================
+   대문(홈) 전용 — 배너 사진 히어로
+   ========================================================= */
+body[data-slug="index"] {
+  /* 기본 제목/날짜는 숨기고 배너 + 본문 인사말로 대체 */
+  & .article-title,
+  & .content-meta,
+  & .tags {
+    display: none;
+  }
+
+  /* 배너 이미지: 콘텐츠 폭을 가득 채우는 와이드 히어로 */
+  & article img {
+    display: block;
+    width: 100%;
+    height: clamp(220px, 40vh, 400px);
+    object-fit: cover;
+    border-radius: 8px;
+    margin: 0.5rem 0 2.5rem;
+  }
+
+  /* 인사말 제목 가운데로, 크게 */
+  & article > h1 {
+    text-align: center;
+    font-size: 2.2rem;
+    margin-top: 0;
+  }
+
+  /* 본문 인사말 가운데 정렬, 톤 다운 */
+  & article > p {
+    text-align: center;
+    color: var(--darkgray);
+  }
+}
+
 /* ----- 태그: 외곽선 칩 스타일 ----- */
 a.tag-link {
   background-color: transparent;

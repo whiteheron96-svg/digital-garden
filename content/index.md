@@ -1,6 +1,10 @@
 ---
-title: Welcome to Quartz
+title: Ellie's Digital Garden
 ---
 
-This is a blank Quartz installation.
-See the [documentation](https://quartz.jzhao.xyz) for how to get started.
+![배너](banner.jpg)
+
+# 어서 오세요 🌿
+
+생각과 공부를 차곡차곡 심어두는 디지털 가든입니다.
+왼쪽 탐색기에서 글들을 둘러보세요.
