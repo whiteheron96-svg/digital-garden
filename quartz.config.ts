@@ -14,7 +14,7 @@ const config: QuartzConfig = {
     enablePopovers: true,
     analytics: {
       provider: "google",
-      tagId: "G-RBJMQOSQ1"
+      tagId: "G-RBJ0MQ0SQ1"
     },
     locale: "en-US",
     baseUrl: "whiteheron96-svg.github.io/digital-garden",
