@@ -141,14 +141,15 @@ body[data-slug="index"] {
     display: none;
   }
 
-  /* 배너 이미지: 콘텐츠 폭을 가득 채우는 와이드 히어로 */
+  /* 배너 이미지: 콘텐츠 폭을 가득 채우는 크고 넓은 와이드 히어로 */
   & article img {
     display: block;
     width: 100%;
-    height: clamp(220px, 40vh, 400px);
+    height: clamp(320px, 60vh, 620px);
     object-fit: cover;
-    border-radius: 8px;
-    margin: 0.5rem 0 2.5rem;
+    object-position: center;
+    border-radius: 10px;
+    margin: 0 0 2.5rem;
   }
 
   /* 인사말 제목 가운데로, 크게 */
