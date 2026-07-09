@@ -24,30 +24,31 @@ const config: QuartzConfig = {
       fontOrigin: "googleFonts",
       cdnCaching: true,
       typography: {
-        header: "Gothic A1",
-        body: "Noto Sans KR",
+        header: "Inter",
+        body: "Inter",
         code: "IBM Plex Mono",
       },
       colors: {
+        // Airtable 디자인 시스템 매핑 (DESIGN-airtable.md)
         lightMode: {
-          light: "#ffffff",         // 배경: 순백
-          lightgray: "#ececec",     // 경계선
-          gray: "#9e9e9e",          // 흐린 텍스트 / 그래프
-          darkgray: "#363636",      // 본문 텍스트
-          dark: "#0f0f0f",          // 제목 / 거의 검정
-          secondary: "#0f0f0f",     // 링크 / 강조: 검정
-          tertiary: "#5c5c5c",      // 호버
-          highlight: "rgba(0, 0, 0, 0.04)",
-          textHighlight: "#00000010",
+          light: "#ffffff",         // 배경: canvas
+          lightgray: "#dddddd",     // 경계선: hairline
+          gray: "#6b7078",          // 흐린 텍스트: muted
+          darkgray: "#333840",      // 본문: body
+          dark: "#181d26",          // 제목: ink (near-black)
+          secondary: "#1b61c9",     // 링크 / 강조: link blue
+          tertiary: "#1a3866",      // 호버: link-active
+          highlight: "rgba(24, 29, 38, 0.04)",
+          textHighlight: "#181d2610",
         },
         darkMode: {
-          light: "#0c0c0d",         // 배경: 거의 검정
-          lightgray: "#2b2b2e",     // 경계선
-          gray: "#6f6f74",          // 흐린 텍스트 / 그래프
-          darkgray: "#c9c9cd",      // 본문 텍스트
-          dark: "#f4f4f5",          // 제목 / 거의 흰색
-          secondary: "#f4f4f5",     // 링크 / 강조: 흰색
-          tertiary: "#a8a8ad",      // 호버
+          light: "#0f1115",         // 배경
+          lightgray: "#262a31",     // 경계선
+          gray: "#8a9099",          // 흐린 텍스트
+          darkgray: "#c9ccd2",      // 본문
+          dark: "#f2f3f5",          // 제목
+          secondary: "#6ea8ff",     // 링크 / 강조
+          tertiary: "#a9c9ff",      // 호버
           highlight: "rgba(255, 255, 255, 0.05)",
           textHighlight: "#ffffff14",
         },
