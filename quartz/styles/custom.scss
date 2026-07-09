@@ -1,10 +1,13 @@
 @use "./base.scss";
 
 /* =========================================================
-   Ellie's Digital Garden — 흑백 모노톤 미니멀 테마
+   Ellie's Digital Garden — Airtable 편집형 디자인 시스템
+   토큰 출처: DESIGN-airtable.md
+   화이트 캔버스 · near-black 잉크 · link blue · signature 카드
    ========================================================= */
 
-/* ----- Pretendard (가변 폰트, CDN) ----- */
+/* ----- Pretendard (한글 본문/제목, 가변 폰트 CDN) -----
+   라틴 대체는 config의 Inter(= Haas 대체) → Pretendard 뒤에 위치 */
 @font-face {
   font-family: "Pretendard Variable";
   font-weight: 45 920;
@@ -14,56 +17,82 @@
     format("woff2-variations");
 }
 
-/* 제목·본문 모두 Pretendard로 지정 (Noto Sans KR은 예비 폰트) */
 :root {
   --bodyFont:
-    "Pretendard Variable", "Noto Sans KR", -apple-system, BlinkMacSystemFont,
-    system-ui, sans-serif !important;
+    "Pretendard Variable", "Inter", "Noto Sans KR", -apple-system,
+    BlinkMacSystemFont, system-ui, sans-serif !important;
   --headerFont:
-    "Pretendard Variable", "Noto Sans KR", -apple-system, BlinkMacSystemFont,
-    system-ui, sans-serif !important;
+    "Pretendard Variable", "Inter", "Noto Sans KR", -apple-system,
+    BlinkMacSystemFont, system-ui, sans-serif !important;
+
+  /* ----- Airtable signature 확장 토큰 (코어 8색은 quartz.config.ts) ----- */
+  --signature-coral: #aa2d00;
+  --signature-forest: #0a2e0e;
+  --signature-cream: #f5e9d4;
+  --signature-cream-ink: #4a3d28;
+  --surface-soft: #f8fafc;
+  --surface-strong: #e0e2e6;
+  --on-dark: #ffffff;
+
+  /* ----- 라운드 스케일 (2px 단일 → 계층화) ----- */
+  --r-sm: 6px; /* 입력창 */
+  --r-md: 10px; /* 카드 · 이미지 · 콜아웃 */
+  --r-lg: 12px; /* CTA · signature 카드 */
+
+  /* ----- 간격 (4px 베이스, 섹션 96px 리듬) ----- */
+  --sp-md: 16px;
+  --sp-lg: 24px;
+  --sp-xl: 32px;
+  --sp-xxl: 48px;
+  --sp-section: 96px;
 }
 
-/* ----- 제목: 또렷하고 자간을 살짝 좁혀 미니멀하게 ----- */
+:root[saved-theme="dark"] {
+  --signature-cream: #2a2416;
+  --signature-cream-ink: #d9cdb2;
+  --surface-soft: #161a20;
+  --surface-strong: #1d222a;
+}
+
+/* ----- 제목: Airtable은 "굵기보다 크기·대비"로 강조 ----- */
 h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--dark);
 }
 
 .article-title {
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
 }
 
 /* 상단 사이트 제목 */
 .page-title a {
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.02em;
 }
 
-/* ----- 본문: 줄간격 넉넉하게, 읽기 편하게 ----- */
+/* ----- 본문: 넉넉한 줄간격 ----- */
 article p,
 article li {
-  line-height: 2.0;
+  line-height: 2;
   letter-spacing: -0.003em;
 }
 
-/* 목록 항목 사이도 살짝 띄워 호흡 있게 */
 article li {
   margin-top: 0.4rem;
 }
 
-/* ----- 본문 링크: 흑백 + 은은하게 차오르는 밑줄 ----- */
+/* ----- 본문 링크: Airtable link blue + 은은하게 차오르는 밑줄 ----- */
 article a:not(.internal):not(.tag-link) {
   text-decoration: none;
-  color: var(--dark);
+  color: var(--secondary);
   background-image: linear-gradient(currentColor, currentColor);
   background-position: 0 100%;
   background-repeat: no-repeat;
@@ -75,45 +104,45 @@ article a:not(.internal):not(.tag-link) {
   }
 }
 
-/* 내부 위키링크: 배경 없이 차분한 밑줄 */
+/* 내부 위키링크: link blue, 차분한 밑줄 */
 article a.internal {
   background-color: transparent;
   padding: 0;
   border-radius: 0;
-  color: var(--dark);
+  color: var(--secondary);
   font-weight: 500;
   border-bottom: 1px solid var(--lightgray);
   transition: border-color 0.2s ease;
 
   &:hover {
-    border-bottom-color: var(--dark);
+    border-bottom-color: var(--secondary);
   }
 }
 
-/* ----- 모서리를 날카롭게: 미니멀한 인상 ----- */
+/* ----- 라운드 계층화: 이미지·콜아웃 10px, 코드 6px, 팝오버 10px ----- */
 img,
-pre,
 .callout,
 .popover-inner {
-  border-radius: 2px !important;
+  border-radius: var(--r-md) !important;
 }
 
-/* ----- 인용구: 왼쪽 굵은 검정 바 ----- */
+pre {
+  border-radius: var(--r-sm) !important;
+  border: 1px solid var(--lightgray);
+  background: var(--surface-soft);
+}
+
+/* ----- 인용구: 왼쪽 near-black 바 ----- */
 blockquote {
   border-left: 3px solid var(--dark);
   color: var(--darkgray);
   font-style: normal;
 }
 
-/* ----- 코드블럭: 얇은 테두리 ----- */
-pre {
-  border: 1px solid var(--lightgray);
-}
-
-/* ----- 구분선 얇고 흐리게 ----- */
+/* ----- 구분선: 얇고 흐리게, 섹션 리듬 ----- */
 hr {
   border-color: var(--lightgray);
-  margin: 2.5rem auto;
+  margin: var(--sp-xxl) auto;
 }
 
 /* ----- 좌측 Explorer / 우측 TOC: 톤 다운 ----- */
@@ -124,42 +153,86 @@ hr {
 
 .toc > button > h3,
 .explorer > button > h2 {
-  letter-spacing: 0.02em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 600;
   color: var(--gray);
+}
+
+/* ----- 검색 버튼 등 UI: near-black CTA 감성으로 ----- */
+.search > button {
+  border-radius: var(--r-lg);
+  border: 1px solid var(--lightgray);
+}
+
+/* =========================================================
+   Signature 서피스 — 마크다운 본문에서 raw HTML로 사용
+   예)  <div class="signature-coral"> ... </div>
+   ========================================================= */
+.signature-coral,
+.signature-forest {
+  color: var(--on-dark);
+  border-radius: var(--r-lg);
+  padding: var(--sp-xxl);
+  margin: var(--sp-xxl) 0;
+
+  h1, h2, h3, h4, p, a, strong {
+    color: var(--on-dark);
+  }
+}
+.signature-coral {
+  background: var(--signature-coral);
+}
+.signature-forest {
+  background: var(--signature-forest);
+}
+
+/* cream 콜아웃 — 부드러운 브랜드 서피스 (용어 설명 등) */
+.cream-callout {
+  background: var(--signature-cream);
+  color: var(--signature-cream-ink);
+  border-radius: var(--r-md);
+  padding: var(--sp-lg);
+  margin: var(--sp-lg) 0;
+}
+
+/* 라이트 그레이 CTA 밴드 (글 하단 구독 유도 등) */
+.cta-band {
+  background: var(--surface-strong);
+  color: var(--dark);
+  border-radius: var(--r-lg);
+  padding: var(--sp-xxl);
+  margin-top: var(--sp-section);
+  text-align: center;
 }
 
 /* =========================================================
    대문(홈) 전용 — 배너 사진 히어로
    ========================================================= */
 body[data-slug="index"] {
-  /* 기본 제목/날짜는 숨기고 배너 + 본문 인사말로 대체 */
   & .article-title,
   & .content-meta,
   & .tags {
     display: none;
   }
 
-  /* 배너 이미지: 콘텐츠 폭을 가득 채우는 크고 넓은 와이드 히어로 */
   & article img {
     display: block;
     width: 100%;
     height: clamp(320px, 60vh, 620px);
     object-fit: cover;
     object-position: center;
-    border-radius: 10px;
+    border-radius: var(--r-lg);
     margin: 0 0 2.5rem;
   }
 
-  /* 인사말 제목 가운데로, 크게 */
   & article > h1 {
     text-align: center;
     font-size: 2.2rem;
     margin-top: 0;
   }
 
-  /* 본문 인사말 가운데 정렬, 톤 다운 */
   & article > p {
     text-align: center;
     color: var(--darkgray);
@@ -171,9 +244,11 @@ a.tag-link {
   background-color: transparent;
   border: 1px solid var(--lightgray);
   color: var(--darkgray);
-  border-radius: 4px;
+  border-radius: var(--r-sm);
   font-weight: 500;
-  transition: border-color 0.2s ease, color 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
 
   &:hover {
     border-color: var(--dark);
