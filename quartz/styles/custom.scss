@@ -32,6 +32,7 @@
   --signature-cream-ink: #4a3d28;
   --surface-soft: #f8fafc;
   --surface-strong: #e0e2e6;
+  --surface-dark: #181d26; /* 항상 어두움 (--dark은 다크모드에서 밝게 뒤집힘) */
   --on-dark: #ffffff;
 
   /* ----- 라운드 스케일 (2px 단일 → 계층화) ----- */
@@ -52,6 +53,7 @@
   --signature-cream-ink: #d9cdb2;
   --surface-soft: #161a20;
   --surface-strong: #1d222a;
+  --surface-dark: #1c222c; /* 페이지 배경(#0f1115)보다 살짝 밝게 띄워 카드처럼 */
 }
 
 /* ----- 제목: Airtable은 "굵기보다 크기·대비"로 강조 ----- */
@@ -208,7 +210,8 @@ hr {
 }
 
 /* =========================================================
-   대문(홈) 전용 — 배너 사진 히어로
+   대문(홈) 전용 — dark navy signature 히어로 밴드
+   (Airtable hero-card-dark). 마크업은 content/index.md 참고.
    ========================================================= */
 body[data-slug="index"] {
   & .article-title,
@@ -216,26 +219,79 @@ body[data-slug="index"] {
   & .tags {
     display: none;
   }
+}
 
-  & article img {
-    display: block;
+.home-hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(360px, 56vh, 560px);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  margin: 0 0 var(--sp-xxl);
+
+  /* 배너 사진 = 히어로 전체 배경 */
+  .home-hero__img {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    height: clamp(320px, 60vh, 620px);
+    height: 100%;
     object-fit: cover;
     object-position: center;
-    border-radius: var(--r-lg);
-    margin: 0 0 2.5rem;
+    z-index: 0;
   }
 
-  & article > h1 {
-    text-align: center;
-    font-size: 2.2rem;
-    margin-top: 0;
+  /* 텍스트 가독성용 어두운 그라데이션 스크림 (아래일수록 진하게) */
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(24, 29, 38, 0.86) 0%,
+      rgba(24, 29, 38, 0.5) 42%,
+      rgba(24, 29, 38, 0.12) 100%
+    );
+    z-index: 1;
   }
 
-  & article > p {
-    text-align: center;
-    color: var(--darkgray);
+  .home-hero__content {
+    position: relative;
+    z-index: 2;
+    padding: var(--sp-xxl);
+    max-width: 42rem;
+    color: var(--on-dark);
+    text-align: left;
+  }
+
+  .home-hero__eyebrow {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: var(--sp-md);
+  }
+
+  h1 {
+    color: var(--on-dark);
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin: 0 0 var(--sp-md);
+    text-wrap: balance;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.35);
+  }
+
+  p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    max-width: 32rem;
+    margin: 0;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
   }
 }
 
